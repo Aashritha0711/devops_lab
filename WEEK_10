@@ -1,0 +1,50 @@
+Step 1: Verify Puppet Installation
+
+puppet --version                  # Check Puppet is installed and view its version
+
+
+Step 2: Create Module Structure
+
+mkdir -p modules/webserver/manifests                      # Create folder for class manifests
+mkdir -p modules/webserver/lib/puppet/functions/webserver # Create folder for custom functions
+
+
+Step 3: Define the Class (Apache Webserver)
+
+# File: modules/webserver/manifests/init.pp
+class webserver {
+  package { 'apache2': ensure => installed }             # Ensure Apache is installed
+  service { 'apache2': ensure => running, enable => true } # Ensure Apache is running and enabled at boot
+  file { '/var/www/html/index.html':                       # Create test HTML page
+    ensure  => file,
+    content => '<h1>Puppet Webserver Working!</h1>',
+  }
+  notify { webserver::greet(): }                          # Call custom function to display message
+}
+
+
+Step 4: Create a Function
+
+# File: modules/webserver/lib/puppet/functions/webserver/greet.rb
+Puppet::Functions.create_function(:'webserver::greet') do
+  def greet
+    "Webserver module applied successfully!"             # Return success message when class applied
+  end
+end
+
+
+Step 5: Create the Site Manifest
+
+# File: site.pp
+include webserver                 # Include the webserver class to apply
+
+
+Step 6: Apply the Manifest
+
+puppet apply site.pp --modulepath=./modules   # Apply the Puppet manifest to configure the system
+
+
+Step 7: Verify Configuration
+
+systemctl status apache2            # Check Apache service status
+# Open browser at http://localhost to see "Puppet Webserver Working!"
