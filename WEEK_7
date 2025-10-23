@@ -1,0 +1,40 @@
+Step 1: Create Project Folder and HTML File
+
+mkdir myhtmlapp                # Create project folder
+cd myhtmlapp                   # Enter project folder
+vi index.html                # Create and edit HTML file
+
+
+
+Step 2: Create Dockerfile
+
+nano Dockerfile                # Create Dockerfile to define Docker image
+# Contents:
+FROM python:3.9-slim           # Use Python 3.9 slim base image
+WORKDIR /app                   # Set working directory inside container
+COPY . .                       # Copy local files to container
+EXPOSE 8000                    # Expose port 8000
+CMD ["python", "-m", "http.server", "8000"]  # Start simple Python HTTP server
+
+
+Step 3: Build Docker Image
+
+docker build -t html-python-server .   # Build image and tag as 'html-python-server'
+
+
+Step 4: Run Docker Container
+
+docker run -d -p 9090:8000 html-python-server  # Run container in background, map host port 9090 to container port 8000
+# App accessible at http://localhost:9090
+
+
+Step 5: Check Running Containers
+
+docker ps                    # List all running containers
+
+
+Step 6: Stop and Remove Container
+
+docker stop <container_id_or_name>   # Stop the running container
+docker rm <container_id_or_name>     # Remove the container
+# Container ID or name can be found using 'docker ps'
