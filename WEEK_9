@@ -1,0 +1,33 @@
+Puppet Installation and Manifest Execution
+sudo apt update                           # Updates package lists to get the latest versions
+sudo apt upgrade -y                       # Upgrades all installed packages to latest versions
+sudo apt install puppet -y                # Installs Puppet (configuration management tool)
+wget https://apt.puppet.com/puppet7-release-focal.deb  # Downloads Puppet 7 release package for Ubuntu 20.04 (Focal)
+sudo dpkg -i puppet7-release-focal.deb    # Installs the downloaded Puppet release package
+sudo apt update                           # Updates repositories after adding Puppet source
+sudo apt install puppet-agent -y          # Installs the Puppet agent component
+/opt/puppetlabs/bin/puppet --version      # Verifies Puppet agent installation
+echo 'export PATH=$PATH:/opt/puppetlabs/bin' >> ~/.bashrc  # Adds Puppet binary path to system PATH
+source ~/.bashrc                          # Reloads shell configuration to apply PATH changes
+mkdir -p ~/puppet/manifests               # Creates a folder for Puppet manifests
+cd ~/puppet/manifests                     # Moves into the manifests directory
+
+✏️ Create Manifest File
+nano site.pp                              # Opens a new manifest file in nano editor
+
+
+Contents of site.pp:
+
+file { '/home/sriya/welcome.txt':         # Creates a file at the given path
+  ensure  => file,                        # Ensures the file exists
+  content => "Hello from Puppet on WSL Ubuntu!",  # Adds this text inside the file
+}
+
+package { 'sl':                           # Ensures the 'sl' package (Steam Locomotive) is installed
+  ensure => installed,
+}
+
+▶️ Run Puppet and Verify
+sudo /opt/puppetlabs/bin/puppet apply site.pp   # Applies the manifest configuration
+cat /home/sriya/welcome.txt                     # Displays the contents of the created file
+sl                                              # Runs the 'sl' command to verify package install
