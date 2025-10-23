@@ -15,7 +15,7 @@ docker pull ubuntu      # Download the Ubuntu image from Docker Hub
 
 Run a Container
 
-docker run -it --name mycontainer <container_name>   # Start a container interactively
+docker run -d --name mycontainer ubuntu sleep 200   # Start a container interactively
 
 
 Check Containers
