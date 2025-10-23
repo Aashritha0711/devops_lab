@@ -1,0 +1,40 @@
+INSTALL DOCKER
+
+sudo apt update          # Update package list
+sudo apt install docker.io -y   # Install Docker
+sudo systemctl start docker     # Start Docker service
+sudo systemctl enable docker    # Enable Docker to start on boot
+docker --version                # Check installed Docker version
+
+
+View Images & Pull Image
+
+docker images           # List all downloaded Docker images
+docker pull ubuntu      # Download the Ubuntu image from Docker Hub
+
+
+Run a Container
+
+docker run -it --name mycontainer <container_name>   # Start a container interactively
+
+
+Check Containers
+
+docker ps               # Show running containers
+docker ps -a            # Show all containers, including stopped ones
+
+
+Manage Container Life Cycle
+
+docker stop mycontainer      # Stop a running container
+docker start mycontainer     # Start a stopped container
+docker restart mycontainer   # Restart a container
+docker pause mycontainer     # Pause container processes
+docker unpause mycontainer   # Resume paused container
+
+
+Delete Container
+
+docker stop mycontainer      # Stop the container
+docker rm mycontainer        # Remove the container
+docker rmi ubuntu            # Remove the image (optional)
