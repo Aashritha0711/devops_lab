@@ -1,0 +1,68 @@
+Verify Docker Installation
+
+docker run hello-world          # Test Docker installation by running the hello-world image
+
+
+Install Minikube
+
+curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64   # Download Minikube
+sudo install minikube-linux-amd64 /usr/local/bin/minikube                               # Install Minikube
+minikube version                                                                        # Verify Minikube installation
+
+
+Install kubectl
+
+curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"  # Download kubectl
+sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl                          # Install kubectl
+kubectl version --client                                                                    # Verify kubectl installation
+
+
+Start Minikube
+
+minikube start --driver=docker       # Start Minikube cluster using Docker driver
+
+
+Create HTML Project
+
+mkdir test && cd test                # Create project folder
+vi index.html                        # Create HTML file for the app
+# HTML contains "Hello from Kubernetes on Linux!" served by Nginx
+
+
+Create Dockerfile
+
+vi Dockerfile                        # Create Dockerfile for Nginx container
+# Contents:
+FROM nginx:alpine                      # Use lightweight Nginx image
+COPY index.html /usr/share/nginx/html/index.html   # Copy HTML to container
+
+
+Build Docker Image in Minikube Environment
+
+eval $(minikube docker-env)           # Point Docker to Minikube’s Docker daemon
+docker build -t test:v1 .             # Build Docker image named test:v1
+
+
+Create Kubernetes Deployment
+
+kubectl create deployment html-page --image=test:v1 --replicas=2 --dry-run=client -o yaml > deployment.yaml  # Generate deployment YAML
+kubectl apply -f deployment.yaml       # Apply deployment to cluster
+
+
+Expose Deployment as Service
+
+kubectl expose deployment html-page --type=NodePort --port=80 --dry-run=client -o yaml > service.yaml   # Generate service YAML
+kubectl apply -f service.yaml           # Apply service to cluster
+
+
+Verify Kubernetes Resources
+
+kubectl get deployments                # List deployments
+kubectl get pods                       # List pods
+kubectl get svc                        # List services
+
+
+Access the App
+
+minikube service html-page             # Open the service in browser via NodePort
+open localhost                         # (Optional) open localhost if NodePort mapped
