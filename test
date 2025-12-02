@@ -1,0 +1,6 @@
+sudo apt install openjdk-17-jre-headless
+curl -L -o jenkins.war https://get.jenkins.io/war-stable/2.462.2/jenkins.war
+java -jar jenkins.war --httpPort=8080
+cat ~/.jenkins/secrets/initialAdminPassword
+curl -sO http://localhost:8000/jenkins_devops/jnlpJars/agent.jar
+sudo chown -R aashritha:aashritha /home/jenkinsslave
