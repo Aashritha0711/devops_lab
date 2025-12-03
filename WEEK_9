@@ -47,13 +47,33 @@ runinterval = 30m
 
 ctrl+x , Y, enter
 
-# Start Puppet Server
-sudo systemctl start puppetserver
-sudo systemctl enable puppetserver
+Create the Puppet Manifest (so agent has something to pull)
+sudo nano /etc/puppetlabs/code/environments/production/manifests/site.pp
+node default {
+  file { '/tmp/hello.txt':
+    ensure  => present,
+    content => "Hello from Puppet Master\n",
+  }
+}
+
+List pending cert:
+
+sudo /opt/puppetlabs/bin/puppetserver ca list
+
+
+Sign it:
+
+sudo /opt/puppetlabs/bin/puppetserver ca sign --certname $(hostname)
+
+Run Puppet Agent Manually (Pull From Server)
+sudo /opt/puppetlabs/bin/puppet agent --test
+
 
 # Start Puppet Agent
 sudo systemctl start puppet
 sudo systemctl enable puppet
 
 sudo /opt/puppetlabs/bin/puppet agent --test
+
+cat /tmp/hello.txt
 
