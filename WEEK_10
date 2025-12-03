@@ -19,7 +19,7 @@ class webserver {
     ensure  => file,
     content => '<h1>Puppet Webserver Working!</h1>',
   }
-  notify { webserver::greet(): }                          # Call custom function to display message
+  notify { "Function Output: ${webserver::greet()}": }                         # Call custom function to display message
 }
 
 
