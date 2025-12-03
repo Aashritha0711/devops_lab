@@ -31,3 +31,29 @@ package { 'sl':                           # Ensures the 'sl' package (Steam Loco
 sudo /opt/puppetlabs/bin/puppet apply site.pp   # Applies the manifest configuration
 cat /home/sriya/welcome.txt                     # Displays the contents of the created file
 sl                                              # Runs the 'sl' command to verify package install
+
+
+
+sudo apt install puppetserver -y
+sudo systemctl start puppetserver
+sudo systemctl enable puppetserver
+sudo nano /etc/puppetlabs/puppet/puppet.conf
+put the below on in it
+
+[agent]
+server = hostname
+environment = production
+runinterval = 30m
+
+ctrl+x , Y, enter
+
+# Start Puppet Server
+sudo systemctl start puppetserver
+sudo systemctl enable puppetserver
+
+# Start Puppet Agent
+sudo systemctl start puppet
+sudo systemctl enable puppet
+
+sudo /opt/puppetlabs/bin/puppet agent --test
+
